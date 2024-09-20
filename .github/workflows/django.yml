@@ -7,11 +7,11 @@ on:
     branches: [ "main" ]
   
 env:
-  NAME_RAO: ${{ vars.NAME_LOCAL }}
-  DB_PORT: ${{ vars.DB_LOCAL }}
-  USER_OS: ${{ vars.USER_LOCAL }}
-  HOST_OS: ${{ vars.HOST_LOCAL }}
-  PASSWORD_OS: ${{ vars.PASSWORD_LOCAL }}
+  NAME_LOCAL: ${{ vars.NAME_LOCAL }}
+  PORT_LOCAL: ${{ vars.DB_LOCAL }}
+  USER_LOCAL: ${{ vars.USER_LOCAL }}
+  HOST_LOCAL: ${{ vars.HOST_LOCAL }}
+  PASSWORD_LOCAL: ${{ vars.PASSWORD_LOCAL }}
 
 jobs:
   build:
