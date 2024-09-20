@@ -76,3 +76,12 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class PasswordResetSerializer(serializers.Serializer):
+    token = serializers.CharField()
+    password = serializers.CharField()
+    password2 = serializers.CharField()

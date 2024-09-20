@@ -38,6 +38,8 @@ USER_LOCAL = os.getenv('USER_LOCAL')
 PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
 HOST_LOCAL = os.getenv('HOST_LOCAL')
 PORT_LOCAL = os.getenv('PORT_LOCAL')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 
 # Application definition
@@ -194,6 +196,12 @@ CACHES = {
         }
     }
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ivancampelo1973@gmail.com'
+EMAIL_HOST_PASSWORD = 'rnwc acqm athn clgo'
+EMAIL_USE_TLS = True
 
 
 CELERY_BEAT_SCHEDULE = {

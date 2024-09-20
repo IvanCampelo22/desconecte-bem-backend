@@ -29,4 +29,6 @@ urlpatterns = [
     path('users/<int:pk>/', user.UsersDetailView.as_view(), name="users-detail"),
     re_path('user/search/$', user.UserList.as_view(), name='user-search'),
     path('change_password/<int:pk>/', user.ChangePasswordView.as_view(), name='auth-change-password'),
+    path('password_reset/', user.PasswordResetRequestView.as_view(), name='password-reset-request'),
+    path('password_reset/<str:uidb64>/<str:token>/', user.PasswordResetView.as_view(), name='password-reset-confirm'),
 ]

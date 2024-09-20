@@ -7,14 +7,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
-
+from django.core.mail import send_mail
 from loguru import logger
-
-from .serializers import UserSerializers, UserUpdateSerializer, ChangePasswordSerializer
-
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes, force_str
+from .serializers import UserSerializers, UserUpdateSerializer, ChangePasswordSerializer, PasswordResetRequestSerializer, PasswordResetSerializer
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from .filters import UserFilter
 from user.models import User
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from helpers.decorators import user_is_active, log_db_queries
+from django.urls import reverse
+
 
 class BasicPagination(PageNumberPagination):
     page_size = 100
@@ -156,3 +160,52 @@ class UserList(generics.ListAPIView):
     serializer_class = UserSerializers
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = UserFilter
+
+
+class PasswordResetRequestView(CreateAPIView):
+    serializer_class = PasswordResetRequestSerializer
+
+    def create(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        try:
+            user = User.objects.get(email=email, is_active=True)
+        except User.DoesNotExist:
+            return Response({'error': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        reset_link = reverse('password-reset-confirm', kwargs={'uidb64': uid, 'token': token})
+        reset_link = request.build_absolute_uri(reset_link)
+
+        send_mail(
+            'Password Reset',
+            f'Clique no link a seguir para redefinir sua senha: {reset_link}',
+            'noreply@example.com',
+            [user.email],
+            fail_silently=False,
+        )
+        return Response({'message': 'E-mail de redefinição de senha enviado'}, status=status.HTTP_200_OK)
+
+
+class PasswordResetView(UpdateAPIView):
+    serializer_class = PasswordResetSerializer
+
+    def update(self, request, *args, **kwargs):
+        uidb64 = kwargs.get('uidb64')
+        token = kwargs.get('token')
+
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        
+        if user is not None and default_token_generator.check_token(user, token):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            new_password = serializer.validated_data['password']
+            user.set_password(new_password)
+            user.save()
+            return Response({'message': 'Redefinição de senha com sucesso'}, status=status.HTTP_200_OK)
+        
+        return Response({'error': 'Token inválido'}, status=status.HTTP_400_BAD_REQUEST)
