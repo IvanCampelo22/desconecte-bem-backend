@@ -33,11 +33,11 @@ PORT = 2005
 
 
 DEBUG = True
-NAME = os.getenv('NAME_LOCAL')
-USER = os.getenv('USER_LOCAL')
-PASSWORD = os.getenv('PASSWORD_LOCAL')
-HOST = os.getenv('HOST_LOCAL')
-PORT = os.getenv('PORT_LOCAL')
+NAME_LOCAL = os.getenv('NAME_LOCAL')
+USER_LOCAL = os.getenv('USER_LOCAL')
+PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
+HOST_LOCAL = os.getenv('HOST_LOCAL')
+PORT_LOCAL = os.getenv('PORT_LOCAL')
 
 
 # Application definition
@@ -106,11 +106,11 @@ WSGI_APPLICATION = 'descbem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
+        'NAME': NAME_LOCAL,
+        'USER': USER_LOCAL,
+        'PASSWORD': PASSWORD_LOCAL,
+        'HOST': HOST_LOCAL,
+        'PORT': PORT_LOCAL,
         
     }
 }
