@@ -37,6 +37,7 @@ NAME = os.getenv('NAME_LOCAL')
 USER = os.getenv('USER_LOCAL')
 PASSWORD = os.getenv('PASSWORD_LOCAL')
 HOST = os.getenv('HOST_LOCAL')
+PORT = os.getenv('PORT_LOCAL')
 
 
 # Application definition
@@ -109,7 +110,7 @@ DATABASES = {
         'USER': USER,
         'PASSWORD': PASSWORD,
         'HOST': HOST,
-        'PORT': 5432,
+        'PORT': PORT,
         
     }
 }
