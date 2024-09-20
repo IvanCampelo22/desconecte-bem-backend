@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [ "main" ]
   
-env:
-  NAME_LOCAL: ${{ vars.NAME_LOCAL }}
-  PORT_LOCAL: ${{ vars.PORT_LOCAL }}
-  USER_LOCAL: ${{ vars.USER_LOCAL }}
-  HOST_LOCAL: ${{ vars.HOST_LOCAL }}
-  PASSWORD_LOCAL: ${{ vars.PASSWORD_LOCAL }}
+# env:
+#   NAME_LOCAL: ${{ vars.NAME_LOCAL }}
+#   PORT_LOCAL: ${{ vars.PORT_LOCAL }}
+#   USER_LOCAL: ${{ vars.USER_LOCAL }}
+#   HOST_LOCAL: ${{ vars.HOST_LOCAL }}
+#   PASSWORD_LOCAL: ${{ vars.PASSWORD_LOCAL }}
 
 jobs:
   build:

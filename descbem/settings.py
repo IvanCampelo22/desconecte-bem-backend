@@ -108,11 +108,11 @@ WSGI_APPLICATION = 'descbem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME_LOCAL,
-        'USER': USER_LOCAL,
-        'PASSWORD': PASSWORD_LOCAL,
-        'HOST': HOST_LOCAL,
-        'PORT': PORT_LOCAL,
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': "12345678",
+        'HOST': "localhost",
+        'PORT': 5432,
         
     }
 }
