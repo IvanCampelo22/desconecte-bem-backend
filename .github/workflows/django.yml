@@ -7,11 +7,11 @@ on:
     branches: [ "main" ]
   
 env:
-  NAME_LOCAL: ${{ secrets.NAME_LOCAL }}
-  PORT_LOCAL: ${{ secrets.PORT_LOCAL }}
-  USER_LOCAL: ${{ secrets.USER_LOCAL }}
-  HOST_LOCAL: ${{ secrets.HOST_LOCAL }}
-  PASSWORD_LOCAL: ${{ secrets.PASSWORD_LOCAL }}
+  NAME_DB: ${{ secrets.NAME_DB }}
+  PORT_DB: ${{ secrets.PORT_DB }}
+  USER_DB: ${{ secrets.USER_DB }}
+  HOST_DB: ${{ secrets.HOST_DB }}
+  PASSWORD_DB: ${{ secrets.PASSWORD_DB }}
   EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
   EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
   EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
@@ -43,8 +43,8 @@ jobs:
         DATABASE: |
           default:
             ENGINE: django.db.backends.postgresql
-            NAME: ${{ env.NAME_LOCAL }}
-            USER: ${{ env.USER_LOCAL }}
-            PASSWORD: ${{ env.PASSWORD_LOCAL }}
-            HOST: ${{ env.HOST_LOCAL }}
-            PORT: ${{ env.PORT_LOCAL }}
+            NAME: ${{ env.NAME_DB }}
+            USER: ${{ env.USER_DB }}
+            PASSWORD: ${{ env.PASSWORD_DB }}
+            HOST: ${{ env.HOST_DB }}
+            PORT: ${{ env.PORT_DB }}

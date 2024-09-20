@@ -25,10 +25,10 @@
 4. Variáveis de ambiente 
 
 
-> USER_LOCAL=<'USER DO BANCO DE DADOS'>
-> HOST_LOCAL=<'HOST DO BANCO DE DADOS'>
-> PASSWORD_LOCAL=<'SENHA DO BANCO DE DADOS'>
-> NAME_LOCAL=<'NOME DO BANCO DE DADOS'>
+> USER_DB=<'USER DO BANCO DE DADOS'>
+> HOST_DB=<'HOST DO BANCO DE DADOS'>
+> PASSWORD_DB=<'SENHA DO BANCO DE DADOS'>
+> NAME_DB=<'NOME DO BANCO DE DADOS'>
 
  
 * OBS: 
@@ -63,7 +63,7 @@
 
 > sudo docker build -t desconectebem .
 
-> sudo docker run -e USER_LOCAL='user_db' -e PASSWORD_LOCAL='password_db' -e HOST_LOCAL='host_db' -e NAME_LOCAL='name_db' -e PORT_LOCAL='port_db -p 8000:8000 desconectebem
+> sudo docker run -e USER_DB='user_db' -e PASSWORD_DB='password_db' -e HOST_DB='host_db' -e NAME_DB='name_db' -e PORT_DB='port_db -p 8000:8000 desconectebem
 
 
 

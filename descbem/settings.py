@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
+from configs.config import SECRET_KEY, NAME_DB, USER_DB, PASSWORD_DB, HOST_DB, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT, PORT_DB
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-q%#fxuty7f&ku(0b5*g61m70$(=*)4h#nj$we-5$2xtyhn2ik#'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,16 +33,6 @@ PORT = 2005
 
 
 DEBUG = True
-NAME_LOCAL = os.getenv('NAME_LOCAL')
-USER_LOCAL = os.getenv('USER_LOCAL')
-PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
-HOST_LOCAL = os.getenv('HOST_LOCAL')
-PORT_LOCAL = os.getenv('PORT_LOCAL')
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-
 
 # Application definition
 
@@ -106,16 +96,16 @@ WSGI_APPLICATION = 'descbem.wsgi.application'
 #     }
 # }
 
-
+# user=postgres.axuhporrpfyjlehsladk password=[YOUR-PASSWORD] host=aws-0-us-west-1.pooler.supabase.com port=6543 dbname=postgres
 #Sem Docker / Subir assim para o github
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME_LOCAL,
-        'USER': USER_LOCAL,
-        'PASSWORD': PASSWORD_LOCAL,
-        'HOST': HOST_LOCAL,
-        'PORT': PORT_LOCAL,
+        'NAME': NAME_DB,
+        'USER': USER_DB,
+        'PASSWORD': PASSWORD_DB,
+        'HOST': HOST_DB,
+        'PORT': PORT_DB,
         
     }
 }
