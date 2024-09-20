@@ -38,8 +38,10 @@ USER_LOCAL = os.getenv('USER_LOCAL')
 PASSWORD_LOCAL = os.getenv('PASSWORD_LOCAL')
 HOST_LOCAL = os.getenv('HOST_LOCAL')
 PORT_LOCAL = os.getenv('PORT_LOCAL')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 
 
 # Application definition
@@ -104,15 +106,16 @@ WSGI_APPLICATION = 'descbem.wsgi.application'
 #     }
 # }
 
+
 #Sem Docker / Subir assim para o github
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "postgres",
-        'USER': "postgres",
-        'PASSWORD': "12345678",
-        'HOST': "localhost",
-        'PORT': 5432,
+        'NAME': NAME_LOCAL,
+        'USER': USER_LOCAL,
+        'PASSWORD': PASSWORD_LOCAL,
+        'HOST': HOST_LOCAL,
+        'PORT': PORT_LOCAL,
         
     }
 }
@@ -197,10 +200,10 @@ CACHES = {
     }
 }
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'ivancampelo1973@gmail.com'
-EMAIL_HOST_PASSWORD = 'rnwc acqm athn clgo'
+EMAIL_HOST = EMAIL_HOST
+EMAIL_PORT = EMAIL_PORT
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_USE_TLS = True
 
 
