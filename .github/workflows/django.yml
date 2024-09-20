@@ -7,15 +7,15 @@ on:
     branches: [ "main" ]
   
 env:
-  NAME_LOCAL: ${{ vars.NAME_LOCAL }}
-  PORT_LOCAL: ${{ vars.PORT_LOCAL }}
-  USER_LOCAL: ${{ vars.USER_LOCAL }}
-  HOST_LOCAL: ${{ vars.HOST_LOCAL }}
-  PASSWORD_LOCAL: ${{ vars.PASSWORD_LOCAL }}
-  EMAIL_PORT: ${{ vars.EMAIL_PORT }}
-  EMAIL_HOST: ${{ vars.EMAIL_HOST }}
-  EMAIL_HOST_USER: ${{ vars.EMAIL_HOST_USER }}
-  EMAIL_HOST_PASSWORD: ${{ vars.EMAIL_HOST_PASSWORD }}
+  NAME_LOCAL: desconecte-bem
+  PORT_LOCAL: desconecte-bem
+  USER_LOCAL: desconecte-bem
+  HOST_LOCAL: desconecte-bem
+  PASSWORD_LOCAL: desconecte-bem
+  EMAIL_PORT: desconecte-bem
+  EMAIL_HOST: desconecte-bem
+  EMAIL_HOST_USER: desconecte-bem
+  EMAIL_HOST_PASSWORD: desconecte-bem
 
 jobs:
   build:
@@ -39,3 +39,12 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+      env: 
+        DATABASE: |
+          default:
+            ENGINE: django.db.backends.postgresql
+            NAME: ${{ env.NAME_LOCAL }}
+            USER: ${{ env.USER_LOCAL }}
+            PASSWORD: ${{ env.PASSWORD_LOCAL }}
+            HOST: ${{ env.HOST_LOCAL }}
+            PORT: ${{ env.PORT_LOCAL }}

@@ -8,11 +8,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
 from .models import User
-from .serializers import UserSerializers, PasswordResetSerializer
+from .serializers import UserSerializers
 import json
 from django.core import mail
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
 
@@ -32,6 +32,7 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
         return str(refresh.access_token)
     
     def test_get_users(self):
+        users = User.objects.all()
         url = reverse('users')
         token = self.get_token(self.user)
         headers = {'HTTP_AUTHORIZATION': f'Bearer {token}'}
@@ -183,8 +184,7 @@ class TestMethodPutEndPointUser(APITestCase):
         self.assertEqual(mail.outbox[0].subject, 'Password Reset')
         self.assertEqual(mail.outbox[0].to, ['john@gmail.com'])
         self.assertIn('Clique no link a seguir para redefinir sua senha:', mail.outbox[0].body)
-
-
+        
 
 class PasswordResetViewTest(TestCase):
     def setUp(self):
