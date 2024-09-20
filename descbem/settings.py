@@ -89,30 +89,30 @@ AUTH_USER_MODEL = 'user.User'
 WSGI_APPLICATION = 'descbem.wsgi.application'
 
 #Com Docker
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': 'db',
-        'PORT': 5432,
-        
-    }
-}
-
-#Sem Docker
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': NAME,
 #         'USER': USER,
 #         'PASSWORD': PASSWORD,
-#         'HOST': HOST,
+#         'HOST': 'db',
 #         'PORT': 5432,
         
 #     }
 # }
+
+#Sem Docker / Subir assim para o github
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': NAME,
+        'USER': USER,
+        'PASSWORD': PASSWORD,
+        'HOST': HOST,
+        'PORT': 5432,
+        
+    }
+}
 
 
 # Password validation
