@@ -106,9 +106,15 @@ DATABASES = {
         'PASSWORD': PASSWORD_DB,
         'HOST': HOST_DB,
         'PORT': PORT_DB,
-        
+        'CONN_MAX_AGE': 0,
+        'TEST': {
+            'NAME': 'test_postgres',
+            'SERIALIZE': False,
+            'MIRROR': None,
+        },
     }
 }
+    
 
 
 # Password validation
