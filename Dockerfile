@@ -24,4 +24,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install awscli
 
 RUN chmod +x start.sh
-ENTRYPOINT ["/bin/sh", "start.sh"]
+
+CMD ["gunicorn","--bind",":8000","--workers","2","descbem.wsgi"]
