@@ -25,4 +25,4 @@ django-redis==5.4.0
 supabase==2.4.6
 setuptools==75.1.0
 python-dotenv==1.0.1
-
+google-generativeai==0.8.2
