@@ -16,4 +16,5 @@ HOST_DB=os.environ.get("HOST_DB")
 NAME_DB=os.environ.get("NAME_DB")
 PORT_DB=os.environ.get("PORT_DB")
 SECRET_KEY=os.environ.get("SECRET_KEY")
+GEMINI_API_KEY=os.environ.get("GEMINI_API_KEY")
 
