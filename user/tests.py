@@ -31,7 +31,6 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
         return str(refresh.access_token)
     
     def test_get_users(self):
-        users = User.objects.all()
         url = reverse('users')
         token = self.get_token(self.user)
         headers = {'HTTP_AUTHORIZATION': f'Bearer {token}'}
@@ -73,6 +72,18 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
         headers = {'HTTP_AUTHORIZATION': f'Bearer {token}'}
         response = self.client.post(url_users, data_users, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_password_with_sequence_number(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "password": "12345678",
+            "email": "teste@gmail.com"
+        }
+        
+        response = self.client.post(url_users, data=json.dumps(data_users), format='json')
+        self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class TestMethodPutEndPointUser(APITestCase):
