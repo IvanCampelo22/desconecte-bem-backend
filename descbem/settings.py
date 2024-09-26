@@ -13,9 +13,18 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from configs.config import SECRET_KEY, NAME_DB, USER_DB, PASSWORD_DB, HOST_DB, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT, PORT_DB
+from datetime import timedelta
+from loguru import logger
+import sys
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+logger.add("logs/logs.log",  serialize=False)
+logger.add(sys.stdout, colorize=True, format="<green>{time}</green> <level>{message}</level>", backtrace=True, diagnose=True)
+logger.opt(colors=True)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,10 +65,12 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'descbem.urls'
 
@@ -120,6 +131,14 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]}
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -145,9 +164,42 @@ CORS_ORIGIN_WHITELIST = [
     'https://example.com'
 ]
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7), 
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=7),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_GRACE_PERIOD': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_GRACE_PERIOD': timedelta(days=7),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/logfile.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
+
+CELERY_IMPORTS = ("user.tasks")
 
 LANGUAGE_CODE = 'en-us'
 
@@ -173,45 +225,52 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+EMAIL_HOST = EMAIL_HOST
+EMAIL_PORT = EMAIL_PORT
+EMAIL_HOST_USER = 'ivancampelo1973@gmail.com'
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_USE_TLS = True
+
+print(EMAIL_HOST_USER)
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_TIMEZONE = 'America/Sao_Paulo'
-CELERY_BROKER_URL = 'redis://54.232.191.174:6379/0'
+CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
-result_backend = 'redis://54.232.191.174'
-accept_content = ['json']
-task_serializer = 'json'
+# result_backend = 'redis://localhost:6379'
+# accept_content = ['json']
+# task_serializer = 'json'
 
 # celery beat
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://54.232.191.174:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://54.232.191.174:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
-EMAIL_HOST = EMAIL_HOST
-EMAIL_PORT = EMAIL_PORT
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-EMAIL_USE_TLS = True
+import google.generativeai as genai
+import os
+from configs.config import GEMINI_API_KEY
+
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+response = model.generate_content("Escreva um texto bonito e inspirador para pessoas que precisam sair do celular")
 
 
 CELERY_BEAT_SCHEDULE = {
     "scheduled_task": {
-        "task": "rao_app.tasks.update_past_days_task", 
-        "schedule": 10.0,
-        "args": (10, 10)
+        "task": "user.tasks.send_email", 
+        "schedule": 20.0,
+        "args": ("Mensagem escrita pelo Gemini", response.text)
     },
-    # "database": {
-    #     "task": "rao_app.tasks.send_name",
-    #     "schedule": 5.0,
-    #     "args": ("Ivan", "Campelo")
-    # }
+
 }
