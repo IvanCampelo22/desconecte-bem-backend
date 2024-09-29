@@ -45,7 +45,7 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
             "name": "Henry",
             "email": "henry@gmail.com",
             "username": "henry22",
-            "password": "12345678",
+            "password": "1234567890000",
             "token": json.dumps(["dy2liFKToR5-5Tq_N2suen:APA91bGstv9_ljvnwX-XZ0OkJQFj29Dxb4Vgifom1qs2gG2Ev9OV1X5hxYXsoVwdy317hfFW_60S6XotIMHJNcimwIds", "-QFk6dS-cSqckjaXclq-wM9kGnXkxHPgolIghPxMqlXSgSvP"])
         }
         
@@ -64,7 +64,7 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
         data_users = {
             "name": "henry",
             "username": "henry22",
-            "password": "12345678",
+            "password": "123456789000",
 
         }
 
@@ -73,7 +73,7 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
         response = self.client.post(url_users, data_users, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
-    def test_password_with_sequence_number(self):
+    def test_password_under_min_length_required(self):
         url_users = reverse('users')
         data_users = {
             "name": "henry",
@@ -82,8 +82,19 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
             "email": "teste@gmail.com"
         }
         
-        response = self.client.post(url_users, data=json.dumps(data_users), format='json')
+        response = self.client.post(url_users, data=data_users, format='json')
         self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
+        
+    def test_create_user_without_password(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "email": "teste@gmail.com"
+        }
+        
+        response = self.client.post(url_users, data=data_users, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class TestMethodPutEndPointUser(APITestCase):
