@@ -45,7 +45,7 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
             "name": "Henry",
             "email": "henry@gmail.com",
             "username": "henry22",
-            "password": "1234567890000",
+            "password": "1234567890000Ab@",
             "token": json.dumps(["dy2liFKToR5-5Tq_N2suen:APA91bGstv9_ljvnwX-XZ0OkJQFj29Dxb4Vgifom1qs2gG2Ev9OV1X5hxYXsoVwdy317hfFW_60S6XotIMHJNcimwIds", "-QFk6dS-cSqckjaXclq-wM9kGnXkxHPgolIghPxMqlXSgSvP"])
         }
         
@@ -91,6 +91,54 @@ class TestMethodGetEndPointUsers(TestCase, URLPatternsTestCase):
             "name": "henry",
             "username": "henry22",
             "email": "teste@gmail.com"
+        }
+        
+        response = self.client.post(url_users, data=data_users, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_password_without_upper_letter(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "email": "teste@gmail.com",
+            "password": "abcdehijklmnopqrstuvwxyz"
+        }
+        
+        response = self.client.post(url_users, data=data_users, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_password_without_lower_letter(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "email": "teste@gmail.com",
+            "password": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        }
+        
+        response = self.client.post(url_users, data=data_users, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_password_without_numbers(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "email": "teste@gmail.com",
+            "password": "ABCDEFGHIJKLMNOPQRStuvwz"
+        }
+        
+        response = self.client.post(url_users, data=data_users, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_password_without_especial_characters(self):
+        url_users = reverse('users')
+        data_users = {
+            "name": "henry",
+            "username": "henry22",
+            "email": "teste@gmail.com",
+            "password": "ABCDEFGHIJKLMNOPQRStuvwz12"
         }
         
         response = self.client.post(url_users, data=data_users, format='json')
