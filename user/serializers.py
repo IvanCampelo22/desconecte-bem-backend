@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from user.models import User
+import re
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -17,6 +18,24 @@ class UserSerializers(serializers.ModelSerializer):
         user = get_user_model()(**validated_data)
         user.save()
         return user
+    
+    def validate_password(self, value: str):
+        if value == value.lower():
+            raise serializers.ValidationError("A senha deve conter ao menos uma letra maíscula")
+        
+        if value ==  value.upper():
+            raise serializers.ValidationError("A senha deve conter ao menos uma letra minúscula")
+        
+        if not bool(re.search("\d", value)):
+            raise serializers.ValidationError("A senha deve conter ao menos um número")
+        
+        # Verifica o decimal ASCII da letra para verificar se é um caracter especial
+        if not any((ord(x) >= 33 and ord(x)<=47) or (ord(x) >= 58 and ord(x) <= 64) or (ord(x) >= 91 and ord(x) <= 96) for x in value):
+            raise serializers.ValidationError("A senha deve conter ao menos um caractér especial. Ex: !@#$%^&*")
+        
+        
+        return value
+        
     
 
 class UserUpdateSerializer(serializers.ModelSerializer):
