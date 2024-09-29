@@ -4,21 +4,17 @@ from user.models import User
 
 
 class UserSerializers(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=False)
+    password = serializers.CharField(write_only=True, required=True, min_length=12)
 
     class Meta:
         model = get_user_model()
         fields = ('id', 'name', 'email', 'username', 'password')
         extra_kwargs = {
-            'password': {'required': False}
+            'password': {'required': True}
         }
 
     def create(self, validated_data):
-        password = validated_data.pop('password', None)
         user = get_user_model()(**validated_data)
-        
-        if password:
-            user.set_password(password)
         user.save()
         return user
     
