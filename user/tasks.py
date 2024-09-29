@@ -3,7 +3,7 @@ from django.core.mail import EmailMessage
 from .models import User 
 import google.generativeai as genai
 import os
-from configs.config import GEMINI_API_KEY
+from configs.config import GEMINI_API_KEY, EMAIL_HOST_USER
 
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
@@ -18,7 +18,7 @@ def send_email(subject, messagem):
         email = EmailMessage(
             subject,
             messagem,
-            "ivancampelo1973@gmail.com",  
+            EMAIL_HOST_USER,  
             [recipient_email]
         )
         email.content_subtype = "html"
