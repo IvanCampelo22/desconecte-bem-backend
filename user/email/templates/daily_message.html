@@ -1,96 +1,96 @@
-<head></head>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Beiruti:wght@200..900&display=swap');
-    *{
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Beiruti', 'Arial';
-    }
-    main{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .logo{
-        width: 140px;
-    }
-
-
-    #introduction-title{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #3F372A;
-        color: #FFFFFF;
-        width: 100%;
-        padding-inline: 5%;
-        padding-block: 3%;
-        border-bottom-right-radius: 197.5px;
-    }
-
-    #introduction-title>h1{
-        font-size: 45px;
-        font-weight: 600;
-    }
-
-    #content{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        height: 100%;
-        margin-inline: 10%;
-        margin-block: 8%;
-    }
-    #content>h2{
-        font-size: 38px;
-        align-self: self-start;
-        font-weight: 500;
-        color: #000000;
-    }
-
-    #content>p{
-        font-size: 35px;
-        font-weight: 300;
-        line-height: 39px;
-        text-align: justify;
-        color: #000000;
-    }
-
-    #final-content{
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        width: 100%;
-    }
-
-    #final-content>.logo{
-        justify-self: flex-start;
-    }
-
-</style>
-<main>
-    <div id="introduction-title">
-        <h1>Olá, [Nome]! Como está se sentindo hoje?</h1>
-        <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
-    </div>
-    <div id="content">
-        <h2>[Título do texto]</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan arcu. Nulla facilisi.
-        Sed venenatis ipsum nec turpis ultricies, at lacinia massa posuere. Aenean malesuada, velit non hendrerit bibendum, quam urna egestas libero, non sodales eros neque vel metus. <br>
-        Mauris accumsan urna non velit commodo, at gravida urna semper. Fusce vehicula, velit non faucibus facilisis, ante purus cursus magna, nec convallis risus nisl nec ex. Integer fringilla, justo ut dignissim pharetra, purus felis sodales nunc, a tincidunt justo justo eu libero.
-        <br> 
-        Curabitur non massa ac nisi tempor feugiat. Vivamus tincidunt nunc non elit bibendum, nec auctor nunc auctor. 
-        Donec vel nisi at arcu malesuada varius. 
-        Sed nec magna a odio faucibus accumsan.Proin euismod magna in odio fermentum, eu bibendum nisi ultrices.
-        </p>
-        <h2>Atenciosamente, [Nome2].</h2>
-    </div>
-    <div id="final-content">
-        <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
-    </div>
-</main>
+{% load static %}
+<html>
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Beiruti:wght@200..900&display=swap');
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Beiruti', 'Arial';
+            }
+            body{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                background-image: url('../assets/background_wood.jpg');
+            }
+        
+            .logo{
+                width: 140px;
+            }
+        
+        
+            #introduction-title{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: #3F372A;
+                color: #FFFFFF;
+                width: 100%;
+                padding-inline: 5%;
+                padding-block: 3%;
+                border-bottom-right-radius: 197.5px;
+            }
+        
+            #introduction-title>h1{
+                font-size: 45px;
+                font-weight: 600;
+            }
+        
+            #content{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-direction: column;
+                height: 100%;
+                margin-inline: 10%;
+                margin-block: 8%;
+            }
+            #content>h2{
+                font-size: 38px;
+                align-self: self-start;
+                font-weight: 500;
+                color: #000000;
+            }
+        
+            #content>p{
+                font-size: 35px;
+                font-weight: 300;
+                line-height: 39px;
+                text-align: justify;
+                color: #000000;
+            }
+        
+            #final-content{
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        
+            #final-content>.logo{
+                justify-self: flex-start;
+            }
+        
+        </style>
+    </head>
+    <body>
+        <header id="introduction-title">
+            <h1>Olá, {{ name }}! Como está se sentindo hoje?</h1>
+            <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
+        </header>
+        <main id="content">
+            <h2>{{ title }}</h2>
+            <p>
+                {{ content }}
+            </p>
+            <h2>Atenciosamente, {{ app_name }}.</h2>
+        </main>
+        <footer id="final-content">
+            <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
+        </footer>
+    </body>
+</html>

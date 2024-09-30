@@ -1,5 +1,6 @@
 from celery import shared_task
 from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 from .models import User 
 import google.generativeai as genai
 import os
@@ -11,15 +12,24 @@ response = model.generate_content("Escreva um texto bonito e inspirador para pes
 
 
 @shared_task
-def send_email(subject, messagem):
+def send_email(subject, message):
+    DAILY_MESSAGE_TEMPLATE_PATH = "./email/template/daily_message.html"
     active_users = User.objects.filter(is_active=True)
     for user in active_users:
         recipient_email = user.email
+        recipient_name = user.name
+        html_template = render_to_string(DAILY_MESSAGE_TEMPLATE_PATH, {
+            'name': recipient_name,
+            'content': message,
+            'title': subject,
+            'app_name': "Desconecte Bem"
+            
+        })
         email = EmailMessage(
             subject,
-            messagem,
+            message,
             EMAIL_HOST_USER,  
-            [recipient_email]
+            [recipient_email],
         )
         email.content_subtype = "html"
         email.send()
