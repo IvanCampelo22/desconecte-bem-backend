@@ -5,13 +5,10 @@ services:
     image: postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345678
-      - POSTGRES_HOST=db
     ports:
       - 5434:5432
+    env_file:
+      - .env
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
@@ -19,11 +16,6 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345678
-      - POSTGRES_HOST=db
     depends_on:
       - db
     env_file:

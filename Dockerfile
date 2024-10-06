@@ -8,8 +8,8 @@ RUN apk add --no-cache pango freetype-dev py3-pillow py3-cffi py3-brotli
 ARG app_env
 ENV app_env=${app_env}
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 COPY . /app/
 
