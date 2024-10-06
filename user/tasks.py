@@ -30,6 +30,7 @@ def send_email(subject, message):
             message,
             EMAIL_HOST_USER,  
             [recipient_email],
+            html_message=html_template
         )
         email.content_subtype = "html"
         email.send()
