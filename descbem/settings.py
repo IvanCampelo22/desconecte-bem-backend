@@ -227,11 +227,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_HOST = EMAIL_HOST
 EMAIL_PORT = EMAIL_PORT
-EMAIL_HOST_USER = 'ivancampelo1973@gmail.com'
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = 'desconectebem@gmail.com'
+EMAIL_HOST_PASSWORD = "fwdq htgi rztk mmgv"
 EMAIL_USE_TLS = True
-
-print(EMAIL_HOST_USER)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_TIMEZONE = 'America/Sao_Paulo'

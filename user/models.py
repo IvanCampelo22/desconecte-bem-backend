@@ -59,3 +59,14 @@ class User(AbstractBaseUser,PermissionsMixin):
     def delete(self, *args, **kwargs):
         cache.delete('users_cache')
         super(User, self).delete(*args, **kwargs)
+
+
+class ImagesModels(models.Model):
+    id = models.AutoField(primary_key=True, db_index=True)
+    user = models.ForeignKey(User, related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    image = models.CharField(max_length=120, null=True, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name=('Data de Upload'))
+
+    class Meta: 
+        db_table = 'images'
+        ordering = ['uploaded_at']
