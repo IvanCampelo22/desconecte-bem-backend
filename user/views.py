@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, viewsets
 from django_filters import rest_framework as filters
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -10,6 +10,9 @@ from rest_framework.pagination import PageNumberPagination
 from django.core.mail import send_mail
 from loguru import logger
 from django.contrib.auth.tokens import default_token_generator
+from django.http import JsonResponse
+from user.models import ImagesModels
+from user.serializers import ImageUploadSerializer
 from django.utils.encoding import force_bytes, force_str
 from .serializers import UserSerializers, UserUpdateSerializer, ChangePasswordSerializer, PasswordResetRequestSerializer, PasswordResetSerializer
 from rest_framework.generics import CreateAPIView, UpdateAPIView
@@ -217,3 +220,55 @@ class PasswordResetView(UpdateAPIView):
             return Response({'message': 'Redefinição de senha com sucesso'}, status=status.HTTP_200_OK)
         
         return Response({'error': 'Token inválido'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class ImageUploadViewSet(viewsets.ViewSet):
+    def create(self, request):
+        serializer = ImageUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            user_id = serializer.validated_data['user']
+            image = serializer.validated_data['image']
+            image_name = image.name
+
+            supabase_client = get_supabase_client()
+            image_content = image.read()
+            image_response = None
+
+            if image:
+                image_response = supabase_client.storage.from_('images_descbem').upload(image_name, image_content)
+
+            if image_response.status_code == 200:
+                try:
+                    user_instance = User.objects.get(id=user_id.id)
+                except User.DoesNotExist:
+                    return Response({'error': 'Invalid User ID'}, status=status.HTTP_400_BAD_REQUEST)
+                
+                ImagesModels.objects.update_or_create(user=user_instance, image=image_name)
+                return Response({'message': 'File uploaded successfully!'}, status=status.HTTP_201_CREATED)
+            
+            else:
+                return Response({'error': 'Failed to upload file to Supabase', 'data': serializer.data}, status=status.HTTP_400_BAD_REQUEST)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def retrieve(self, request, pk=None):
+        supabase_client = get_supabase_client()
+        try:
+            images = ImagesModels.objects.filter(user=pk)
+        except ImagesModels.DoesNotExist:
+            return Response({'error': 'Invalid ID'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not images.exists():
+            return Response({'error': 'No images found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        for image in images:
+            image_name = image.image
+            if not image_name.endswith(('.png', '.jpg', '.jpeg')):
+                image_name += '.png'
+
+            projects_image_url = supabase_client.storage.from_('images_descbem').get_public_url(image_name)
+            if projects_image_url:
+                return JsonResponse({'url': projects_image_url})
+        
+        return Response({'error': 'No valid URL found'}, status=status.HTTP_404_NOT_FOUND)
