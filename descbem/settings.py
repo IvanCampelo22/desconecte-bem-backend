@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',
+    'socialemotional',
     'notification',
     'rest_framework_simplejwt',
     'django_filters',
