@@ -144,11 +144,11 @@
 
 2. Execute o celery beat
 
-> celery -A rao beat -l info
+> celery -A descbem beat -l info
 
 3. Execute o Celery
 
-> celery -A rao worker --loglevel=info
+> celery -A descbem worker --loglevel=info
 
 
 

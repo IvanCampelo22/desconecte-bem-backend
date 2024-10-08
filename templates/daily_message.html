@@ -15,7 +15,7 @@
                 justify-content: center;
                 flex-direction: column;
                 height: 100%;
-                background-image: url('../assets/background_wood.jpg');
+                background-image: url('/templates/background_wood.jpg');
             }
         
             .logo{
@@ -80,17 +80,17 @@
     <body>
         <header id="introduction-title">
             <h1>Olá, {{ name }}! Como está se sentindo hoje?</h1>
-            <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
+            <img class="logo" src="{% static 'images/logoLight.png' %}" alt="Logo da Desconecte Bem">
         </header>
         <main id="content">
-            <h2>{{ title }}</h2>
+            <h2>{{ subject }}</h2>
             <p>
-                {{ content }}
+                {{ message }}
             </p>
             <h2>Atenciosamente, {{ app_name }}.</h2>
         </main>
         <footer id="final-content">
-            <img class="logo" src="../assets/logoLight.png" alt="Logo da Desconecte Bem">
+            <img class="logo" src="{% static 'images/logoLight.png' %}" alt="Logo da Desconecte Bem">
         </footer>
     </body>
 </html>

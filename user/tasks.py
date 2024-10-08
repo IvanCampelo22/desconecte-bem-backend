@@ -1,38 +1,37 @@
 from celery import shared_task
-from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from .models import User 
-import google.generativeai as genai
-import os
-from configs.config import GEMINI_API_KEY, EMAIL_HOST_USER
-
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-response = model.generate_content("Escreva um texto bonito e inspirador para pessoas que precisam sair do celular")
-
+from django.core.mail import send_mail
+import copy
+from notification.models import Notification
 
 @shared_task
 def send_email(subject, message):
-    DAILY_MESSAGE_TEMPLATE_PATH = "./email/template/daily_message.html"
+
     active_users = User.objects.filter(is_active=True)
+
     for user in active_users:
         recipient_email = user.email
-        recipient_name = user.name
-        html_template = render_to_string(DAILY_MESSAGE_TEMPLATE_PATH, {
-            'name': recipient_name,
-            'content': message,
-            'title': subject,
-            'app_name': "Desconecte Bem"
-            
+        context = copy.deepcopy({
+        "name": user.name,
+        "subject": subject,
+        "message": message,
+        "app_name": "Desconecte Bem"
         })
-        email = EmailMessage(
-            subject,
-            message,
-            EMAIL_HOST_USER,  
-            [recipient_email],
-            html_message=html_template
+        html_content = render_to_string("daily_message.html", context)
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email="desconectebem@gmail.com",
+            recipient_list=[recipient_email],
+            fail_silently=False,
+            html_message=html_content,
         )
-        email.content_subtype = "html"
-        email.send()
 
-    print(f"{len(active_users)} e-mails enviados com sucesso.")
+        Notification.objects.update_or_create(
+        user=user,
+        title=f"{len(active_users)} e-mails enviados com sucesso.",
+        message=message,
+        notification_type="success",  # Assumindo que warning é um tipo adequado
+    )
+        
