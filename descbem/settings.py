@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from configs.config import SECRET_KEY, NAME_DB, USER_DB, PASSWORD_DB, HOST_DB, EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT, PORT_DB
+from configs.config import SECRET_KEY, NAME_DB, USER_DB, PASSWORD_DB, HOST_DB, EMAIL_HOST, EMAIL_PORT, PORT_DB
 from datetime import timedelta
 from loguru import logger
 import sys
@@ -242,27 +242,8 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
-# result_backend = 'redis://localhost:6379'
-# accept_content = ['json']
-# task_serializer = 'json'
-
 # celery beat
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-import google.generativeai as genai
-import os
-from configs.config import GEMINI_API_KEY
 
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel(model_name="gemini-1.5-flash")
-response = model.generate_content("Escreva um texto bonito e inspirador para pessoas que precisam sair do celular")
-
-CELERY_BEAT_SCHEDULE = {
-    "scheduled_task": {
-        "task": "user.tasks.send_email", 
-        "schedule": 20.0,
-        "args": ("Mensagem escrita pelo Gemini", response.text)
-    },
-
-}
