@@ -1,5 +1,5 @@
 from django.db import models
-
+from user.models import User
 # Create your models here.
 
 class SocialMidiaUse(models.Model):
@@ -40,6 +40,7 @@ class SocialMidiaUse(models.Model):
         kdPreocupante = 3, "Preocupante"
 
     id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
     use_of_social_midia = models.IntegerField(verbose_name="Tempo em Midias Sociais",
         choices=KDUseSocialMedia.choices,
         blank=False,

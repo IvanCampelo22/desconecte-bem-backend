@@ -52,6 +52,9 @@ class BasicPagination(PageNumberPagination):
             'results': data
         })
 
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 class UsersView(APIView):
 
     queryset = User.objects.all()
